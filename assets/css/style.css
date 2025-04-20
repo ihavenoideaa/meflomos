@@ -1,0 +1,313 @@
+@import url('./font/Barlow.css');
+
+html {
+    --color-tag_bg: #eef3fe;
+    --color-tag: #5783f7;;
+    --color-shadow: #dddddd;
+    --color-img_border: #e6e6e6;
+    --color-data: #4b4b4b;
+    --color-data-hover: #272727;
+    --color-side-tag: #4b5563;
+    --color-side-tag-bg: #dbeafe;
+    --side-tag-bord: #9b9d9e;
+
+    --ht-day-bg: #c7c7c7c9;
+
+    --ht-lv-0: #c7c7c7c9;
+    --ht-lv-1: #8ddeb5;
+    --ht-lv-2: #39d353;
+    --ht-lv-3: #26a641;
+    --ht-lv-4: #006d32;
+
+    --ht-tooltip: #efefef !important;
+    --ht-tooltip-bg: #303133;
+
+    --theme: #fb6c28;
+    --sib-background: #fff;
+
+    --bg-url: url("../light_bg.png");
+}
+
+html[data-mode="dark"] {
+    --color-tag_bg: #3a4359;
+    --color-tag: #2b88d8;
+    --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-img_border: #121212;
+    --color-data: #9d9d9d;
+    --color-data-hover: #5f5f5f;
+    --color-side-tag: #9ca3af;
+    --color-side-tag-bg: #18181b;
+    --side-tag-bord: #3f3f46;
+
+    --ht-day-bg: #3d3d3d;
+    --ht-lv-0: #161b22;
+    --ht-lv-1: #0e4429;
+    --ht-lv-2: #006d32;
+    --ht-lv-3: #26a641;
+    --ht-lv-4: #39d353;
+
+    --ht-tooltip: #efefef;
+    --ht-tooltip-bg: #303133;
+
+    --theme: #9999ff;
+    --sib-background: #303030;
+
+    --bg-url: url("../dark_bg.png");
+}
+
+body {
+    font-family: Barlow, "PingFang SC", Helvetica, Arial, sans-serif !important;
+    background-image: var(--bg-url) !important;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+@media screen and (max-width: 600px) {
+    .memos {
+      padding: 0px 12px;
+    }
+}
+.main_container {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    margin: 0 auto 30px;
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh);
+    max-width: 1320px !important;
+}
+
+@media screen and (max-width: 1150px) {
+    .main_container {
+        display:flex;
+        margin: 0 18px;
+    }
+    .memos_aside {
+        display:none;
+    }
+}
+
+
+.memos_aside{
+    min-width: 0;
+    flex: 1;
+    padding-bottom: 15px;
+    position: fixed;
+}
+
+.memos_main {
+    margin: 31px 0 10rem 0;
+    grid-column: span 8 / span 8;
+    grid-column-end: 12;
+    min-width: 0;
+    flex: 1;
+    padding-bottom: 15px;
+
+}
+
+.memos-card:hover {
+    box-shadow: 0px 3px 12px var(--color-shadow);
+}
+
+.memos-card .res_img {
+    width: 135px;
+    height: 135px;
+    cursor: pointer;
+    margin: 3px 10px 2px 0;
+    vertical-align: middle;
+    border: 1px solid var(---color-img_border);
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.memos-tag {
+    background-color: var(--color-tag_bg);
+    border-radius: 3px;
+    color: var(--color-tag);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px;
+    margin-right: 2px;
+}
+.memos_content a {
+    color: var(--color-tag);
+}
+
+.memos_aside__item {
+    position: relative;
+    width: 280px;
+    margin-bottom: 15px;
+}
+
+.memos_stats {
+    padding: 0 20px;
+}
+.memos_stats .stats_datas .data {
+    color: var(--color-data);
+    :hover {
+        color: var(--color-data-hover);
+    }
+}
+
+.memos_stats .stats_datas .data .number{
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.memos_stats .stats_datas .data .type {
+    font-size: 10px;
+    line-height: 2;
+}
+
+.heatmap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 260px;
+    margin: auto;
+    padding: 5px 30px 0 10px;
+}
+
+.heatmap_day {
+    width: 14px;
+    height: 14px;
+    background: var(--ht-day-bg);
+    color: var(--heatgrid-day-color);
+    border: 1px solid #00000000;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    display: inline-block;
+    position: relative;
+}
+
+.heatmap_week {
+    display: flex;
+    flex-direction: column;
+}
+
+.heatmap_day_level_0 {
+    background-color: var(--ht-lv-0);
+}
+
+.heatmap_day_level_1 {
+    background-color: var(--ht-lv-1);
+    border-color:#75b68b;
+}
+
+.heatmap_day_level_2 {
+    background-color: var(--ht-lv-2);
+    border-color:#30CF79;
+}
+
+.heatmap_day_level_3 {
+    background-color: var(--ht-lv-3);
+    border-color:#30CF79;
+}
+
+.heatmap_day_level_4 {
+    background-color: var(--ht-lv-4);
+    border-color:#30CF79;
+}
+
+.heatmap_tooltip {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: max-content;
+    color: var(--ht-tooltip);
+    background-color: var(--ht-tooltip-bg);
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 10px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    opacity: 1;
+    transition: 0.3s;
+    z-index: 2000;
+    text-align: right;
+    transform: translateX(-50%);
+}
+
+.heatmap_tooltip_count,
+.heatmap_tooltip_post {
+    display: inline-block;
+}
+
+.heatmap_tooltip_title,
+.heatmap_tooltip_date {
+    display: block;
+}
+
+.heatmap_tooltip_date {
+    margin: 0 0.25rem;
+}
+
+.statsTag {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    color: var(--color-side-tag);
+    background-color: var(--color-side-tag-bg);
+    border-color: var(--side-tag-bord);
+}
+
+.statsTag a {
+    display: flex;
+    flex-direction: row;
+}
+
+.action {
+    pointer-events: none;
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    z-index: 90;
+}
+
+.action_item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--sib-background);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1), 0 5px 20px rgba(0, 0, 0, .2);
+}
+
+.action_item.mode {
+    pointer-events: auto;
+    margin-bottom: 15px;
+}
+.action_item.mode svg {
+    transform: scale(0);
+    opacity: 0;
+    transition: transform .85s, opacity .85s;
+}
+
+
+.action_item svg {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    fill: var(--theme);
+}
+
+svg {
+    display: block;
+    vertical-align: middle;
+}
+
+.action_item.mode svg.icon_active {
+    transform: scale(1);
+    opacity: 1;
+}

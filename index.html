@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"  data-mode="light">
+  <head>
+    <title text="Memos"></title>
+    <meta charset="utf-8" />
+
+    <script src="./assets/js/lib/tailwind_3.4.16.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/animate.min.css" />
+    <link rel="stylesheet" href="./assets/js/lib/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+    <body>
+      <div id=" main animated showInUp flex flex-col">
+        <div class="main_container">
+            <div class="memos_aside">
+                <div class="memos_stats memos_aside__item mb-[20px]">
+                  <div id="user_display" class="w-full flex flex-row gap-2 justify-start items-start pt-4 pb-6 px-3">
+                  </div> 
+                  <div class="stats_datas px-[20px] flex flex-row justify-between">
+                    <div class="data">
+                      <div id="memos-total" class="number">60</div>
+                      <div class="type">笔记</div>
+                    </div>
+                    <div class="data">
+                        <div id="tag-total" class="number">24</div>
+                        <div class="type">标签</div>
+                    </div>
+                    <div class="data">
+                        <div id="day-count" class="number">429</div>
+                        <div class="type">天</div>
+                    </div>
+                  </div>
+                  <div id="heatmap" class="heatmap mt-1 mb-2">
+                    <div class="week">
+                      <div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div><div class="heatmap_day" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-3815" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7908" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-318" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1802" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9066" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2974" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4684" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8303" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2622" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2745" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9959" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9070" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-3696" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8331" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-504" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7572" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8421" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8392" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7964" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9911" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7762" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9718" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4947" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-671" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-5634" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-5998" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-3048" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-217" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-5977" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9394" tabindex="0"></div><div class="el-tooltip heatmap_day light_green" aria-describedby="el-tooltip-5014" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-6966" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7378" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-943" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8753" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2839" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1817" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7811" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9349" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7320" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7175" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9730" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8262" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-841" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1648" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-687" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-6957" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4668" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1318" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4868" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2043" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-453" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-7142" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2985" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2384" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9745" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1909" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8578" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-44" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9756" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9820" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-581" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-5733" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9074" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2802" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-3691" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-8659" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4675" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-4936" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1088" tabindex="0"></div></div><div class="week"><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-9223" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-2906" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-1994" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-56" tabindex="0"></div><div class="el-tooltip heatmap_day light_green" aria-describedby="el-tooltip-212" tabindex="0"></div><div class="el-tooltip heatmap_day dark_green today" aria-describedby="el-tooltip-5210" tabindex="0"></div><div class="el-tooltip heatmap_day" aria-describedby="el-tooltip-3409" tabindex="0"></div>
+                    </div>
+                   </div>
+                <div id="memos-xtype" class="pt-5 pl-2 w-full flex flex-row justify-start items-center gap-2.5 flex-wrap"></div>
+                  <div class="flex flex-col justify-start items-start w-full mt-5 px-1 h-auto shrink-0 flex-nowrap">
+                    <div class="w-full gap-1 mb-1 text-base text-gray-700 font-bold border-b-[1px] border-[#282f39] dark:text-[#cbd5e1] dark:border-[#cbd5e1]">标签</div>
+                    <div id="all-tags" class="w-full flex flex-col mt-1.5 justify-start items-center pr-7 relative flex-wrap gap-x-2 gap-y-1.5 dark:text-[#cbd5e1]"></div>
+                  </div>
+                </div>
+            </div>
+        
+            <div class="memos_main">
+                <div class="flex flex-col justify-start items-start w-full max-w-full">
+                    <div class="w-full grid gap-2">
+                    <div id="memos_container" class="min-w-full mx-auto w-full ">
+                        <!--memos-->
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <div class="action_item mode">
+              <svg class="mode-light" height="25" viewBox="0 0 1024 1024" width="25" xmlns="http://www.w3.org/2000/svg">
+                <path d="M234.24 512a277.76 277.76 0 1 0 555.52 0 277.76 277.76 0 1 0-555.52 0zM512 187.733a42.667 42.667 0 0 1-42.667-42.666v-102.4a42.667 42.667 0 0 1 85.334 0v102.826A42.667 42.667 0 0 1 512 187.733zm-258.987 107.52a42.667 42.667 0 0 1-29.866-12.373l-72.96-73.387a42.667 42.667 0 0 1 59.306-59.306l73.387 72.96a42.667 42.667 0 0 1 0 59.733 42.667 42.667 0 0 1-29.867 12.373zm-107.52 259.414H42.667a42.667 42.667 0 0 1 0-85.334h102.826a42.667 42.667 0 0 1 0 85.334zm34.134 331.946a42.667 42.667 0 0 1-29.44-72.106l72.96-73.387a42.667 42.667 0 0 1 59.733 59.733l-73.387 73.387a42.667 42.667 0 0 1-29.866 12.373zM512 1024a42.667 42.667 0 0 1-42.667-42.667V878.507a42.667 42.667 0 0 1 85.334 0v102.826A42.667 42.667 0 0 1 512 1024zm332.373-137.387a42.667 42.667 0 0 1-29.866-12.373l-73.387-73.387a42.667 42.667 0 0 1 0-59.733 42.667 42.667 0 0 1 59.733 0l72.96 73.387a42.667 42.667 0 0 1-29.44 72.106zm136.96-331.946H878.507a42.667 42.667 0 1 1 0-85.334h102.826a42.667 42.667 0 0 1 0 85.334zM770.987 295.253a42.667 42.667 0 0 1-29.867-12.373 42.667 42.667 0 0 1 0-59.733l73.387-72.96a42.667 42.667 0 1 1 59.306 59.306l-72.96 73.387a42.667 42.667 0 0 1-29.866 12.373z"></path>
+              </svg>
+              <svg class="mode-dark icon_active" height="25" viewBox="0 0 1024 1024" width="25" xmlns="http://www.w3.org/2000/svg">
+                <path d="M587.264 104.96c33.28 57.856 52.224 124.928 52.224 196.608 0 218.112-176.128 394.752-393.728 394.752-29.696 0-58.368-3.584-86.528-9.728C223.744 832.512 369.152 934.4 538.624 934.4c229.376 0 414.72-186.368 414.72-416.256 1.024-212.992-159.744-389.12-366.08-413.184z"></path>
+                <path d="M340.48 567.808l-23.552-70.144-70.144-23.552 70.144-23.552 23.552-70.144 23.552 70.144 70.144 23.552-70.144 23.552-23.552 70.144zM168.96 361.472l-30.208-91.136-91.648-30.208 91.136-30.208 30.72-91.648 30.208 91.136 91.136 30.208-91.136 30.208-30.208 91.648z"></path>
+              </svg>
+            </div>
+        </div>
+      </div>
+      <script>
+        memosHost = 'https://memo.reverier16.com';
+        memosUserId = 'users/1';
+      </script>
+      <script src="./assets/js/lib/marked.min.js"></script>
+      <script src="./assets/js/main.js"></script>
+      <script src="./assets/js/lib/jquery.min.js"></script>
+      <script src="./assets/js/lib/jquery.fancybox.min.js"></script>
+      <script src="./assets/js/lib/lazysizes.min.js"></script>
+    </body>
+</html>
