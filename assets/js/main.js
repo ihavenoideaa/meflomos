@@ -15,6 +15,9 @@ const memosStats = {};
 let tagTotal = 0;
 tagData = {};
 const tagStats = {};
+const tagFilterPage = {};
+let curTagPage = 0;
+let maxTagPage = 0;
 
 document.addEventListener('DOMContentLoaded', async () => { // DOM 加载后执行
     let page_token = '';
@@ -118,7 +121,7 @@ async function renderUserDisplay() {
         const userDisplay = document.getElementById('user_display');
         userDisplay.innerHTML=`
             <div class="w-8 h-8 overflow-clip !w-16 !h-16 drop-shadow rounded-3xl">
-                <img class="user_avatr w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 avatar lazyload" data-src="${avatar}" src="../lazyload_avatar.svg"/>
+                <img class="user_avatr w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 avatar lazyload" data-src="${avatar}" src="./assets/lazyload_avatar.svg"/>
             </div>
             <div class="mt-2 w-auto max-w-[calc(100%-6rem)] flex flex-col justify-center items-start">
                 <p class="user_name w-full text-3xl text-black leading-tight font-medium opacity-80 dark:text-gray-200">
@@ -142,7 +145,7 @@ function renderHeader(memo, avatar, user_nickname, user_name) {
                 <div class="w-full flex flex-row justify-start items-center">
                     <a class="w-auto hover:opacity-80" href="${memosHost}/u/${user_name}">
                         <div class="w-8 h-8 overflow-clip rounded-xl mr-2 shrink-0">
-                            <img class="w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 lazyload" data-src="${avatar}" src="../lazyload_avatar.svg"/>
+                            <img class="w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 lazyload" data-src="${avatar}" src="./assets/lazyload_avatar.svg"/>
                         </div>
                     </a>
                     <div class="w-full flex flex-col justify-center items-start gap-[2px]">
@@ -296,14 +299,66 @@ function handleXtype(data) {
 
 // 标签
 function handleAllTags(tags) {
-    const all_tags = document.getElementById('all-tags');
+    const all_tags = document.getElementById('tags-selector');
+
+    let index = 0;
     for (const [tag, count] of Object.entries(tags)) {
+        // all_tags.innerHTML += `
+        //     <a data-filter="${tag}" class="tag-filter theme-cursor hover:underline focus:underline">#${tag}&nbsp;(${count})</a>
+        // `
+        const displayStr = index / 8 >= 1 ? "style='display:none'" : "";
         all_tags.innerHTML += `
-            <a data-filter="${tag}" class="tag-filter cursor-pointer text-sm hover:underline focus:underline">#${tag}&nbsp;(${count})</a>
-        `
+          <li class="tag-select theme-cursor tag-filter" data-page=${Math.floor(index / 8)} data-filter="${tag}" ${displayStr}>
+            <div  class="tag-wrap">
+              <i class="svg-icon arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#999999" d="M12 15a3 3 0 1 1 0-6a3 3 0 0 1 0 6Z"/></svg>
+              </i>
+              <i class="tag_emoji">
+                  <p class=" theme-cursor">🌠</p>
+              </i>
+              <label class="tag-name  theme-cursor">${tag}</label>
+              <div class="tag-count">${count}</div>
+            </div>
+          </li>`;
+        index++;
     }
     handleTagFilter();
+
+    maxTagPage = Math.ceil(index / 8) - 1;
+    const pageControl = document.getElementById('page-control');
+    if(maxTagPage === 0) {
+        pageControl.style.display = 'none';
+        return;
+    }
+
+    const prevPage = document.getElementById('prev-page');
+    const nextPage = document.getElementById('next-page');
+    pageControl.addEventListener('click', function (e) {
+        let lastPage = curTagPage;
+        if(nextPage.contains(e.target) && curTagPage < maxTagPage) {
+            curTagPage++;
+        }
+        else if(prevPage.contains(e.target) && curTagPage > 0) {
+            curTagPage--;
+        }
+
+        if(lastPage !== curTagPage) {
+            const tagFilters = document.querySelectorAll('.tag-select');
+            tagFilters.forEach(tagFilter => {
+                const page = parseInt(tagFilter.dataset.page);
+                if(page === curTagPage) {
+                    tagFilter.style.removeProperty('display');
+                }
+                else if(page === lastPage) {
+                    tagFilter.style.display = 'none';
+                }
+            });
+        }
+
+    })
 }
+
+
 // 标签过滤
 function handleTagFilter() {
     const tagFilters = document.querySelectorAll('.tag-filter');
@@ -314,10 +369,10 @@ function handleTagFilter() {
             if(this.dataset.filter !== nowFilterTag) {
                 nowFilterTag = this.dataset.filter;
                 
-                this.style.textDecoration = 'underline';
+                this.classList.add('selected');
 
                 if(lastFilter) {
-                    lastFilter.style.removeProperty('text-decoration');
+                    lastFilter.classList.remove('selected');
                 }
                 lastFilter = tagFilter;
 
@@ -325,7 +380,7 @@ function handleTagFilter() {
                 renderMemosCard(tagData[nowFilterTag]);
             }
             else {
-                lastFilter.style.removeProperty('text-decoration');
+                lastFilter.classList.remove('selected');
                 nowFilterTag = '';
                 isTagFiltering = false;
                 lastFilter = null;

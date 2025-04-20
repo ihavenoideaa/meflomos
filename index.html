@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"  data-mode="light">
   <head>
     <title text="Memos"></title>
     <meta charset="utf-8" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./assets/js/lib/tailwind_3.4.16.min.js"></script>
     <link rel="stylesheet" href="./assets/css/animate.min.css" />
     <link rel="stylesheet" href="./assets/js/lib/jquery.fancybox.min.css" />
@@ -38,7 +38,20 @@
                 <div id="memos-xtype" class="pt-5 pl-2 w-full flex flex-row justify-start items-center gap-2.5 flex-wrap"></div>
                   <div class="flex flex-col justify-start items-start w-full mt-5 px-1 h-auto shrink-0 flex-nowrap">
                     <div class="w-full gap-1 mb-1 text-base text-gray-700 font-bold border-b-[1px] border-[#282f39] dark:text-[#cbd5e1] dark:border-[#cbd5e1]">标签</div>
-                    <div id="all-tags" class="w-full flex flex-col mt-1.5 justify-start items-center pr-7 relative flex-wrap gap-x-2 gap-y-1.5 dark:text-[#cbd5e1]"></div>
+                    <ul id="tags-selector" class="tags-container">                  
+                    </ul>
+                    <div id="page-control" class="flex flex-row justify-self-center mx-auto mt-1 gap-x-2">
+                        <div id="prev-page" class="px-2 hover:bg-[#00000041] rounded-lg dark:hover:bg-[#181818b9]">
+                          <a href="javascript:void(0)">  
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512 512"><path d="M189.3 128.4L89 233.4c-6 5.8-9 13.7-9 22.4s3 16.5 9 22.4l100.3 105.4c11.9 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2L184.4 288h217c16.9 0 30.6-14.3 30.6-32s-13.7-32-30.6-32h-217l48.2-50.4c11.9-12.5 11.9-32.7 0-45.2-12-12.5-31.3-12.5-43.3 0z" fill="var(--svg-page)"/></svg>
+                          </a>
+                        </div>
+                        <div id="next-page" class="px-2 hover:bg-[#00000041] rounded-lg dark:hover:bg-[#181818b9]">
+                          <a href="javascript:void(0)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512 512"><path d="M322.7 128.4l100.3 105c6 5.8 9 13.7 9 22.4s-3 16.5-9 22.4L322.7 383.6c-11.9 12.5-31.3 12.5-43.2 0-11.9-12.5-11.9-32.7 0-45.2l48.2-50.4h-217c-17 0-30.7-14.3-30.7-32s13.7-32 30.6-32h217l-48.2-50.4c-11.9-12.5-11.9-32.7 0-45.2 12-12.5 31.3-12.5 43.3 0z" fill="var(--svg-page)"/></svg>
+                          </a>
+                        </div>
+                    </div>
                   </div>
                 </div>
             </div>
