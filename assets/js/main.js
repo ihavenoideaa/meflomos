@@ -142,7 +142,7 @@ function renderHeader(memo, avatar, user_nickname, user_name) {
                 <div class="w-full flex flex-row justify-start items-center">
                     <a class="w-auto hover:opacity-80" href="${memosHost}/u/${user_name}">
                         <div class="w-8 h-8 overflow-clip rounded-xl mr-2 shrink-0">
-                            <img class="w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 lazyload" data-src="./assets/lazyload_img.gif" src="../lazyload_avatar.svg"/>
+                            <img class="w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80 lazyload" data-src="${avatar}" src="../lazyload_avatar.svg"/>
                         </div>
                     </a>
                     <div class="w-full flex flex-col justify-center items-start gap-[2px]">
@@ -203,7 +203,7 @@ function renderImages(memo) {
             if (res.type.startsWith('image/')) {
                 let res_url = `${memosHost}/file/${res.name}/${res.filename}`;
                 return `<img class="res_img lazyload" data-fancybox="Joe" href="${res_url}" data-src="${res_url}?thumbnail=true" alt="${res.filename}" 
-                        src="${lazyThumbnail}" onerror="Joe.errorImg(this, 'LoadFailedImg')">`;
+                        src="./assets/lazyload_img.gif" onerror="Joe.errorImg(this, 'LoadFailedImg')">`;
             }
             if (res.type.startsWith('video/')) {
                 return `<joe-dplayer height="150px" width="300px" src="${memosHost}/file/${res.name}/${res.filename}"></joe-dplayer>`;
