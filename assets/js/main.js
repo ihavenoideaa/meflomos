@@ -107,13 +107,11 @@ function renderMemosCard(renderMemos) {
 // 渲染页面顶部用户信息
 async function renderUserDisplay() {
     const url = `${memosHost}/api/v1/${memosUserId}`;
-    console.log(url)
     try {
         const response = await fetch(url);
         const data = await response.json();
 
         const avatar = `${memosHost}${data.avatarUrl}`;
-        console.log(avatar)
         const user_name = data ? data.username : "Memos";
         const description = data ? data.description : "memos";
         const user_nickname = data&&data.nickname!=="" ? data.nickname : user_name;
@@ -172,8 +170,6 @@ function renderHeader(memo, avatar, user_nickname, user_name) {
 }
 // 渲染卡片内容
 function renderContent(memo) {
-    //const memoContREG = marked.parse(memo.content);
-
     let TAG_REG = /(^|\s)#([^\s#]+)(?=\s|$)/g;
     let HTML_REG = /```__html([\s\S]*?)```/gm;
     var memoContREG = memo.content.replace(TAG_REG, 
@@ -246,7 +242,7 @@ async function renderSideBar() {
 
     try {
         // 数据
-        showNumberDate(memosStats);
+        showNumberDate();
         // 热力图
         createHeatmap(timeList);
         // 特殊类型
@@ -261,7 +257,7 @@ async function renderSideBar() {
   
 }
 
-function showNumberDate(data) {
+function showNumberDate() {
     const timeDifference = new Date() - new Date('2025-03-15T18:03:07Z');
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     document.getElementById('memos-total').textContent = memosTotal;
@@ -299,32 +295,120 @@ function handleXtype(data) {
 
 // 标签
 function handleAllTags(tags) {
-    const all_tags = document.getElementById('tags-selector');
-
+    const allTagsElement  = document.getElementById('tags-selector');
+    const fragment = document.createDocumentFragment();
     let index = 0;
     for (const [tag, count] of Object.entries(tags)) {
-        // all_tags.innerHTML += `
-        //     <a data-filter="${tag}" class="tag-filter theme-cursor hover:underline focus:underline">#${tag}&nbsp;(${count})</a>
-        // `
         const displayStr = index / 8 >= 1 ? "style='display:none'" : "";
-        all_tags.innerHTML += `
-          <li class="tag-select theme-cursor tag-filter" data-page=${Math.floor(index / 8)} data-filter="${tag}" ${displayStr}>
+        const li = document.createElement('li');
+        li.className = "tag-select theme-cursor tag-filter";
+        li.dataset.page = Math.floor(index / 8);
+        li.dataset.filter = tag;
+        li.setAttribute('style', displayStr);
+        li.innerHTML = `
             <div  class="tag-wrap">
-              <i class="svg-icon arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#999999" d="M12 15a3 3 0 1 1 0-6a3 3 0 0 1 0 6Z"/></svg>
-              </i>
-              <i class="tag_emoji">
-                  <p class=" theme-cursor">🌠</p>
-              </i>
-              <label class="tag-name  theme-cursor">${tag}</label>
-              <div class="tag-count">${count}</div>
+                <i class="svg-icon arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#999999" d="M12 15a3 3 0 1 1 0-6a3 3 0 0 1 0 6Z"/></svg>
+                </i>
+                <i class="tag_emoji">
+                    <p class=" theme-cursor">🌠</p>
+                </i>
+                <label class="tag-name  theme-cursor">${tag}</label>
+                <div class="tag-count">${count}</div>
             </div>
-          </li>`;
+        `;
+        fragment.appendChild(li);
         index++;
     }
-    handleTagFilter();
+    allTagsElement.appendChild(fragment);
 
-    maxTagPage = Math.ceil(index / 8) - 1;
+    handleTagFilter();
+    handlePageSelect(index);
+}
+
+
+// 标签过滤
+function handleTagFilter() {
+    // 处理 URL 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    nowFilterTag = urlParams.get('tag') || '';
+
+    const tagFilters = document.querySelectorAll('.tag-filter');
+    tagFilters.forEach(tagFilter => {
+
+        // url 选择标签
+        if(nowFilterTag === tagFilter.dataset.filter ) {
+            tagFilter.classList.add('selected');
+            lastFilter = tagFilter;
+            document.getElementById('memos_container').innerHTML = '';
+            renderMemosCard(tagData[nowFilterTag]);
+        }
+
+        tagFilter.addEventListener('click', function() {    // 监听点击事件
+            isTagFiltering = true;
+
+            if(this.dataset.filter !== nowFilterTag) {
+                nowFilterTag = this.dataset.filter;
+                
+                this.classList.add('selected');
+                if(lastFilter) {
+                    lastFilter.classList.remove('selected');
+                }
+                lastFilter = tagFilter;
+                document.getElementById('memos_container').innerHTML = '';
+                renderMemosCard(tagData[nowFilterTag]);
+                updateUrl(nowFilterTag);    // 设置URL
+            }
+            else {
+                lastFilter.classList.remove('selected');
+                nowFilterTag = '';
+                isTagFiltering = false;
+                lastFilter = null;
+                document.getElementById('memos_container').innerHTML = '';
+                renderMemosCard(all_memos);
+                updateUrl('');  // 设置URL
+            }
+
+            setTimeout(function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }, 300);
+        });
+    });
+}
+
+function updateUrl(filterTag) {
+    let newUrl = '';
+    if (filterTag) {
+        newUrl = `${window.location.pathname}?tag=${filterTag}`;
+    } else {
+        newUrl = window.location.pathname;
+    }
+    history.pushState({}, '', newUrl);  // 更新地址栏
+}
+
+function handlePageSelect(tagsCount) {
+    const tagFilters = document.querySelectorAll('.tag-select');
+    const changePageDispaly = (current, last) => {
+        tagFilters.forEach(tagFilter => {
+            const page = parseInt(tagFilter.dataset.page);
+            if(page === current) {
+                tagFilter.style.removeProperty('display');
+            }
+            else if(page === last) {
+                tagFilter.style.display = 'none';
+            }
+        });
+    }
+
+    if(lastFilter){ // 如果设置了url参数
+        curTagPage = parseInt(lastFilter.dataset.page);
+        changePageDispaly(curTagPage, 0);
+    }
+
+    maxTagPage = Math.ceil(tagsCount / 8) - 1;
     const pageControl = document.getElementById('page-control');
     if(maxTagPage === 0) {
         pageControl.style.display = 'none';
@@ -343,60 +427,10 @@ function handleAllTags(tags) {
         }
 
         if(lastPage !== curTagPage) {
-            const tagFilters = document.querySelectorAll('.tag-select');
-            tagFilters.forEach(tagFilter => {
-                const page = parseInt(tagFilter.dataset.page);
-                if(page === curTagPage) {
-                    tagFilter.style.removeProperty('display');
-                }
-                else if(page === lastPage) {
-                    tagFilter.style.display = 'none';
-                }
-            });
+            changePageDispaly(curTagPage, lastPage);
         }
 
     })
-}
-
-
-// 标签过滤
-function handleTagFilter() {
-    const tagFilters = document.querySelectorAll('.tag-filter');
-    tagFilters.forEach(tagFilter => {
-        tagFilter.addEventListener('click', function() {
-            isTagFiltering = true;
-
-            if(this.dataset.filter !== nowFilterTag) {
-                nowFilterTag = this.dataset.filter;
-                
-                this.classList.add('selected');
-
-                if(lastFilter) {
-                    lastFilter.classList.remove('selected');
-                }
-                lastFilter = tagFilter;
-
-                document.getElementById('memos_container').innerHTML = '';
-                renderMemosCard(tagData[nowFilterTag]);
-            }
-            else {
-                lastFilter.classList.remove('selected');
-                nowFilterTag = '';
-                isTagFiltering = false;
-                lastFilter = null;
-                document.getElementById('memos_container').innerHTML = '';
-                renderMemosCard(all_memos);
-            }
-
-            setTimeout(function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }, 300);
-        });
-    });
-
 }
 
 function createDay(date, post) {
