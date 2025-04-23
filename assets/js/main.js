@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', async () => { // DOM 加载后执�
 
 function renderMemosCard(renderMemos) {
     const container = document.getElementById('memos_container');
-    container.innerHTML = ''; // 清空容器
     renderMemos.forEach((memo, index) => {
         const tagsString = memo.tags.join(' ');
         const item = document.createElement('div');
@@ -172,9 +171,8 @@ function renderHeader(memo, avatar, user_nickname, user_name) {
 function renderContent(memo) {
     let TAG_REG = /(^|\s)#([^\s#]+)(?=\s|$)/g;
     let HTML_REG = /```__html([\s\S]*?)```/gm;
-    var memoContREG = memo.content.replace(TAG_REG, 
-        "<span><a class='memos-tag cursor-pointer' rel='noopener noreferrer' href='"
-            + memosHost +"/explore?filter=tagSearch:$2' target='_blank' rel='noopener noreferrer'>#$2</a></span>")
+    let memoContREG = memo.content.replace(TAG_REG, 
+        '<span><a class="memos-tag cursor-pointer" onclick="contentTagClick(\'$2\')" href="javascript:void(0)">#$2</a></span>')
         .replace(HTML_REG, "$1");   //匹配```__html```
         memoContREG = marked.parse(memoContREG);
     
@@ -300,10 +298,11 @@ function handleAllTags(tags) {
     let index = 0;
     for (const [tag, count] of Object.entries(tags)) {
         const li = document.createElement('li');
-        li.className = "tag-select cursor-pointer tag-filter";
+        li.className = "cursor-pointer tag-filter";
         li.dataset.page = Math.floor(index / 8);
         li.dataset.filter = tag;
         li.style.display = index / 8 >= 1 ? 'none' : '';
+        li.id = tag;
         li.innerHTML = `
             <div  class="tag-wrap">
                 <i class="svg-icon arrow">
@@ -313,7 +312,7 @@ function handleAllTags(tags) {
                     <p class="cursor-pointer">🌠</p>
                 </i>
                 <label class="tag-name cursor-pointer">${tag}</label>
-                <div class="tag-count">${count}</div>
+                <div class="tag-count cursor-pointer">${count}</div>
             </div>
         `;
         fragment.appendChild(li);
@@ -325,47 +324,26 @@ function handleAllTags(tags) {
     handlePageSelect(index);
 }
 
-
-// 标签过滤
+// 侧边栏标签过滤
 function handleTagFilter() {
     // 处理 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
-    nowFilterTag = urlParams.get('tag') || '';
+    const urlFilterTag = urlParams.get('tag') || '';
 
     const tagFilters = document.querySelectorAll('.tag-filter');
-    tagFilters.forEach(tagFilter => {
 
+    tagFilters.forEach(tagFilter => {
         // url 选择标签
-        if(nowFilterTag === tagFilter.dataset.filter ) {
-            tagFilter.classList.add('selected');
-            lastFilter = tagFilter;
-            document.getElementById('memos_container').innerHTML = '';
-            renderMemosCard(tagData[nowFilterTag]);
+        if(urlFilterTag === tagFilter.dataset.filter ) {
+            setFilter(tagFilter, urlFilterTag);
         }
 
-        tagFilter.addEventListener('click', function() {    // 监听点击事件
-            isTagFiltering = true;
-
+        tagFilter.addEventListener('click', function() {    // 监听标签点击事件
             if(this.dataset.filter !== nowFilterTag) {
-                nowFilterTag = this.dataset.filter;
-                
-                this.classList.add('selected');
-                if(lastFilter) {
-                    lastFilter.classList.remove('selected');
-                }
-                lastFilter = tagFilter;
-                document.getElementById('memos_container').innerHTML = '';
-                renderMemosCard(tagData[nowFilterTag]);
-                updateUrl(nowFilterTag);    // 设置URL
+                setFilter(tagFilter, this.dataset.filter);
             }
             else {
-                lastFilter.classList.remove('selected');
-                nowFilterTag = '';
-                isTagFiltering = false;
-                lastFilter = null;
-                document.getElementById('memos_container').innerHTML = '';
-                renderMemosCard(all_memos);
-                updateUrl('');  // 设置URL
+                resetFilter();
             }
 
             setTimeout(function () {
@@ -376,6 +354,91 @@ function handleTagFilter() {
             }, 300);
         });
     });
+
+    // 顶部 TOC 按钮事件
+    const tagToc = document.getElementById('tag-toc');
+    tagToc.addEventListener('click', function (e) {
+        if(isTagFiltering) {
+            resetFilter();
+        }
+    });
+}
+
+// 内容标签点击
+function contentTagClick(tag) {
+    if(tag !== nowFilterTag) {
+        const filterElement = document.getElementById(tag);
+        const tagFilterPage = parseInt(filterElement.dataset.page);
+        setFilter(filterElement, tag);
+        changePageDispaly(tagFilterPage);
+    }
+}
+
+const memosContainer = document.getElementById('memos_container');
+// 设置标签筛选
+function setFilter(filterElement, filterTag) {
+    isTagFiltering = true;
+    nowFilterTag = filterTag;
+
+    filterElement.classList.add('selected');
+    if (lastFilter) {
+        lastFilter.classList.remove('selected');
+    }
+    lastFilter = filterElement;
+
+    memosContainer.innerHTML = '';
+    renderMemosCard(tagData[filterTag]);
+    updateUrl(filterTag);
+    updateToc(filterTag);
+}
+
+// 重置标签筛选
+function resetFilter() {
+    isTagFiltering = false;
+    lastFilter.classList.remove('selected');
+    nowFilterTag = '';
+    lastFilter = null;
+
+    memosContainer.innerHTML = '';
+    renderMemosCard(all_memos);
+    updateUrl('');  // 设置URL
+    updateToc('');
+}
+
+
+function updateToc(filterTag) {
+    const tagToc = document.getElementById('tag-toc');
+    if(filterTag) { // 添加 Toc
+        if(tagToc.children.length == 1) {
+            const fragment = document.createDocumentFragment();
+            // 斜杠
+            const slash = document.createElement('span');
+            slash.textContent = '/';
+            fragment.appendChild(slash);
+            
+            // 当前标签
+            const tagTocNow = document.createElement('span');
+            tagTocNow.id = "tag-toc-now";
+            tagTocNow.className = 'pl-[0.2rem] pr-[0.3rem] py-[0.2rem] rounded hover:bg-[#00000041] cursor-pointer';
+            tagTocNow.textContent = filterTag;
+            fragment.appendChild(tagTocNow);
+            
+            tagToc.appendChild(fragment);
+        }
+        else {
+            document.getElementById('tag-toc-now').textContent = filterTag;
+        }
+    }
+    else {  // 删除Toc
+        const children = tagToc.children;
+        if (children.length == 3) {
+            // 删除最后两个子元素
+            const lastChild = children[children.length - 1];
+            const secondLastChild = children[children.length - 2];
+            tagToc.removeChild(lastChild);
+            tagToc.removeChild(secondLastChild);
+        }
+    }
 }
 
 function updateUrl(filterTag) {
@@ -389,22 +452,9 @@ function updateUrl(filterTag) {
 }
 
 function handlePageSelect(tagsCount) {
-    const tagFilters = document.querySelectorAll('.tag-select');
-    const changePageDispaly = (current, last) => {
-        tagFilters.forEach(tagFilter => {
-            const page = parseInt(tagFilter.dataset.page);
-            if(page === current) {
-                tagFilter.style.removeProperty('display');
-            }
-            else if(page === last) {
-                tagFilter.style.display = 'none';
-            }
-        });
-    }
-
     if(lastFilter){ // 如果设置了url参数
-        curTagPage = parseInt(lastFilter.dataset.page);
-        changePageDispaly(curTagPage, 0);
+        urlTagPage = parseInt(lastFilter.dataset.page);
+        changePageDispaly(urlTagPage);
     }
 
     maxTagPage = Math.ceil(tagsCount / 8) - 1;
@@ -417,19 +467,32 @@ function handlePageSelect(tagsCount) {
     const prevPage = document.getElementById('prev-page');
     const nextPage = document.getElementById('next-page');
     pageControl.addEventListener('click', function (e) {
-        let lastPage = curTagPage;
-        if(nextPage.contains(e.target) && curTagPage < maxTagPage) {
-            curTagPage++;
+        let page = curTagPage;
+        if(nextPage.contains(e.target) && page < maxTagPage) {
+            page++;
         }
-        else if(prevPage.contains(e.target) && curTagPage > 0) {
-            curTagPage--;
+        else if(prevPage.contains(e.target) && page > 0) {
+            page--;
         }
-
-        if(lastPage !== curTagPage) {
-            changePageDispaly(curTagPage, lastPage);
-        }
-
+        changePageDispaly(page);
     })
+}
+
+// 改变标签筛选栏显示的页
+const changePageDispaly = (page) => {
+    if(page !== curTagPage) {
+        const tagFilters = document.querySelectorAll('.tag-filter');
+        tagFilters.forEach(tagFilter => {
+            const tagPage = parseInt(tagFilter.dataset.page);
+            if(tagPage === page) {
+                tagFilter.style.removeProperty('display');
+            }
+            else if(tagPage === curTagPage) {
+                tagFilter.style.display = 'none';
+            }
+        });
+        curTagPage = page;
+    }
 }
 
 function createDay(date, post) {
