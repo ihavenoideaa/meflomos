@@ -299,21 +299,20 @@ function handleAllTags(tags) {
     const fragment = document.createDocumentFragment();
     let index = 0;
     for (const [tag, count] of Object.entries(tags)) {
-        const displayStr = index / 8 >= 1 ? "style='display:none'" : "";
         const li = document.createElement('li');
-        li.className = "tag-select theme-cursor tag-filter";
+        li.className = "tag-select cursor-pointer tag-filter";
         li.dataset.page = Math.floor(index / 8);
         li.dataset.filter = tag;
-        li.setAttribute('style', displayStr);
+        li.style.display = index / 8 >= 1 ? 'none' : '';
         li.innerHTML = `
             <div  class="tag-wrap">
                 <i class="svg-icon arrow">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#999999" d="M12 15a3 3 0 1 1 0-6a3 3 0 0 1 0 6Z"/></svg>
                 </i>
                 <i class="tag_emoji">
-                    <p class=" theme-cursor">🌠</p>
+                    <p class="cursor-pointer">🌠</p>
                 </i>
-                <label class="tag-name  theme-cursor">${tag}</label>
+                <label class="tag-name cursor-pointer">${tag}</label>
                 <div class="tag-count">${count}</div>
             </div>
         `;
